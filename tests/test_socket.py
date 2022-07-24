@@ -39,4 +39,6 @@ async def test_socket_can_process_JSON_objects_and_send_them_():
     connection_handler = ConnectionHandler(socket)
     await connection_handler.send_response(test_responses["sign_up"])
 
-    assert socket.sent_response == json.dumps(test_responses["sign_up"])
+    expected_response = r'{"user_name": "funky_goblin", "user_id": "a-user-id", "chatroom_id": "a-chatroom-id"}'
+
+    assert socket.sent_response == expected_response
