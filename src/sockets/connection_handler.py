@@ -11,7 +11,7 @@ class ConnectionHandler:
     async def send_response(self, response: dict):
         await self.socket.send_text(json.dumps(response))
 
-    async def wait_for_connection(self) -> str:
+    async def process_incoming_connection(self) -> str:
         await self.socket.accept()
         while True:
             request = await self.socket.receive_text()
