@@ -1,5 +1,5 @@
-import asyncio
 import json
+
 
 class ConnectionHandler:
     parsed_request = {}
