@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "codejam22-hungry-hippogriffs"
+version = "0.1.0"
+description = ""
+authors = ["Gaurav Panta <gp2344@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+[tool.poetry.dev-dependencies]
+flake8 = "4.0.1"
+isort = "5.10.1"
+pre-commit = "2.17.0"
+pytest = "7.1.2"
+pytest-asyncio = "0.19.0"
+flake8-docstrings = "1.6.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
