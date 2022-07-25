@@ -1,7 +1,7 @@
 import pytest
-import json
-from tests.mocks.socket_mock import SocketMock
+
 from src.sockets.connection_handler import ConnectionHandler
+from tests.mocks.socket_mock import SocketMock
 
 test_requests = {"sign_up": r'{"user_name": "funky_goblin"}'}
 
@@ -16,6 +16,13 @@ test_responses = {
 
 @pytest.mark.asyncio
 async def test_socket_accepts_connection():
+    """Test function that accepts connection
+
+    test function
+
+    :return:
+        None
+    """
     socket = SocketMock(test_requests["sign_up"])
     await socket.accept()
 
@@ -24,6 +31,13 @@ async def test_socket_accepts_connection():
 
 @pytest.mark.asyncio
 async def test_socket_can_process_accepted_connection_into_JSON_object():
+    """Test socket accept connection and convert to json object
+
+    test function
+
+    :return:
+        None
+    """
     socket = SocketMock(test_requests["sign_up"])
     connection_handler = ConnectionHandler(socket)
     request = await connection_handler.get_request()
@@ -35,6 +49,13 @@ async def test_socket_can_process_accepted_connection_into_JSON_object():
 
 @pytest.mark.asyncio
 async def test_socket_can_process_JSON_objects_and_send_them_():
+    """Test function for json object
+
+    Test function
+
+    :return:
+        None
+    """
     socket = SocketMock(test_responses["sign_up"])
     connection_handler = ConnectionHandler(socket)
     await connection_handler.send_response(test_responses["sign_up"])
