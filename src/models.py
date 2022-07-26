@@ -7,6 +7,3 @@ class User(BaseModel):
     user_id: int
     name: str
     chatroom_id: str
-
-
-
