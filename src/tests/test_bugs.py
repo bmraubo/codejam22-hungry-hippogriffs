@@ -2,6 +2,7 @@ from src.models import MessageModel
 from datetime import datetime
 from src.bug.translate_bug import TranslateBug
 
+
 def test_translate_bug():
     translate_bug = TranslateBug()
     message = MessageModel(message_id=1, body="I am a bug", timestamp=datetime.now())
