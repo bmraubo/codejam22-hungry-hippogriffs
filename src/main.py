@@ -5,6 +5,8 @@ from fastapi import FastAPI, WebSocket
 from sockets.connection_handler import ConnectionHandler
 
 app = FastAPI()
+
+
 # Instantiate DatabaseClient
 
 

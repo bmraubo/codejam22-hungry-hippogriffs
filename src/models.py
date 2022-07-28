@@ -1,30 +1,13 @@
-from datetime import datetime
-
 from pydantic import BaseModel
+from pydantic_sqlalchemy import sqlalchemy_to_pydantic
 
+from src.db.models.chat_room_model import ChatRoom
+from src.db.models.messages_model import Message
+from src.db.models.user_model import User
 
-class UserModel(BaseModel):
-    """User object model"""
-
-    name: str
-    user_id: str
-    chatroom_id: str
-
-
-class MessageModel(BaseModel):
-    """Message object model"""
-
-    message_id: int
-    body: str
-    timestamp: datetime
-
-
-class ChatRoomModel(BaseModel):
-    """ChatRoom object model"""
-
-    chatroom_id: str
-    messages: list[MessageModel]
-    user_id: str
+UserModel = sqlalchemy_to_pydantic(User)
+MessageModel = sqlalchemy_to_pydantic(Message)
+ChatRoomModel = sqlalchemy_to_pydantic(ChatRoom)
 
 
 # Response Models
@@ -45,5 +28,5 @@ class SendMessageResponseModel(BaseModel):
 class ChatRoomResponseModel(BaseModel):
     """Get Messages Response Model"""
 
-    chatroom_id: str
+    chat_room_id: str
     messages: list[MessageModel]
