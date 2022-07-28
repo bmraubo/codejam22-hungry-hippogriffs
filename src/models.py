@@ -16,6 +16,7 @@ class SignUpResponseModel(BaseModel):
 
     status: bool
     user: UserModel
+    chat_room: ChatRoomModel
 
 
 class SendMessageResponseModel(BaseModel):
