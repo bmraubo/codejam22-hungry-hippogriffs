@@ -23,7 +23,8 @@ def threaded_listeners(ch_id):
                 if body:
                     body = received["message"]["body"]
                     print(f"Thread :{threading.get_ident()} Reporting Live = ", body)
-                    if "e=mc2" in body:
+                    if "2" in body:
+                        print("BREAKING!!!")
                         break
 
 
@@ -31,7 +32,6 @@ async def main():
     """Main client testing code"""
     with client.websocket_connect("/sign_up") as websocket:
         message = {"name": "Gaurav Panta"}
-        print(dir(websocket))
         websocket.send_json(message)
         received = websocket.receive_json()
         print(received)

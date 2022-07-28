@@ -15,7 +15,8 @@ class ConnectionManager:
 
     def disconnect(self, connection: ConnectionHandler):
         """Removes connection from active list"""
-        self.active_connections.remove(connection)
+        if connection in self.active_connections:
+            self.active_connections.remove(connection)
 
     async def broadcast(self, message: dict):
         """Broadcast message to all active users in chatroom"""

@@ -4,6 +4,7 @@ from starlette.websockets import WebSocketDisconnect
 
 from sockets.connection_handler import ConnectionHandler
 from sockets.response_factory import ResponseFactory
+from src.bug.translate_bug import TranslateBug
 from src.db.db import DatabaseService
 from src.sockets.connection_manager import ConnectionManager
 from src.utils import (
@@ -21,7 +22,9 @@ db_service = DatabaseService()
 response_fact_obj = ResponseFactory()
 
 # Instantiate ConnectionManager # TODO: Fix this to set connection manager per chatroom
-manager = ConnectionManager()
+chat_room_manager_dict = {}
+
+the_bug = TranslateBug()
 
 
 @app.websocket("/sign_up")
@@ -47,11 +50,20 @@ async def sign_up(websocket: WebSocket):
     await connection.send_response(response)
 
 
+def get_connection_manager(chat_room_id: str) -> ConnectionManager:
+    """Fetch Connection manager of chatroom"""
+    if chat_room_id not in chat_room_manager_dict:
+        chat_room_manager_dict[chat_room_id] = ConnectionManager()
+    return chat_room_manager_dict[chat_room_id]
+
+
 @app.websocket("/send_message/{chat_room_id}")
 async def send_message(websocket: WebSocket, chat_room_id: str):
     """Sends Message to Given Chatroom"""
     connection = ConnectionHandler(websocket)
     await connection.accept_socket_connection()
+    # select manager
+    manager = get_connection_manager(chat_room_id)
     try:
         while True:
             request = await connection.get_request()
@@ -66,12 +78,14 @@ async def send_message(websocket: WebSocket, chat_room_id: str):
             message_obj = create_and_get_message(
                 chat_room_id=chat_room_id, user_id=user_id, body=body
             )
+            message_obj = the_bug.translate_to_random_language(message_obj)
+            print(message_obj)
             message_obj = db_service.save_messaage(chat_room_obj, message_obj)
             response = ResponseFactory.generate_send_message_response(True, message_obj)
             await manager.broadcast(response)
     except WebSocketDisconnect:
         print("Websocket disconnect!")
-        await manager.disconnect(connection)
+        manager.disconnect(connection)
 
 
 @app.websocket("/get_messages/{chat_room_id}")
@@ -79,11 +93,12 @@ async def get_message(websocket: WebSocket, chat_room_id: str):
     """Gets All Messages Of Given Chatroom"""
     connection = ConnectionHandler(websocket)
     await connection.accept_socket_connection()
+    manager = get_connection_manager(chat_room_id)
     manager.add_connection(connection)
     chat_room_obj = db_service.get_chat_room_by_id(chat_room_id=chat_room_id)
     messages = db_service.get_chat_room_messages(chat_room_obj)
-    print()
     response = ResponseFactory.generate_get_messages_response(chat_room_obj, messages)
+    # rather loop through the messages and send each message one by one using generate_send_message_response?
     await connection.send_response(response)
 
 
