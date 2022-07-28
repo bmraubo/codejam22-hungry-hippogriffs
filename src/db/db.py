@@ -14,7 +14,6 @@ class DatabaseService:
         """Saves user object to database"""
         user_db_model = User(
             name=user_obj.name,
-            chat_room_id=user_obj.chat_room_id,
             user_id=user_obj.user_id,
         )
         Session.add(user_db_model)
@@ -29,9 +28,7 @@ class DatabaseService:
         """
         user_db_obj = Session.query(User).filter_by(user_id=user_id).first()
         return create_and_get_user(
-            user_id=user_db_obj.user_id,
-            chat_room_id=user_db_obj.chat_room_id,
-            username=user_db_obj.name,
+            user_id=user_db_obj.user_id, username=user_db_obj.name
         )
 
     def save_messaage(self, chatroom_obj: ChatRoomModel, message_obj: MessageModel):
