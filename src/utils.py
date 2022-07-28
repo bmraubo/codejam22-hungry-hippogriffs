@@ -3,7 +3,7 @@ from datetime import datetime
 
 from pydantic import ValidationError
 
-from models import ChatRoomModel, MessageModel, UserModel
+from src.models import ChatRoomModel, MessageModel, UserModel
 
 
 class RandomIdGenerator:

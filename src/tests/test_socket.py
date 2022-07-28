@@ -45,7 +45,7 @@ async def test_socket_can_process_JSON_objects_and_send_them_():
 
     expected_sent_response = (
         r'{"status": true, "user": {"id": 1, "user_id": "a-user-id", "name": "funky_goblin", '
-        r'"chat_room_id": "a-chatroom-id", "created_at": null, "updated_at": null}}'
+        r'"created_at": null, "updated_at": null}}'
     )
 
     assert socket.sent_response == expected_sent_response

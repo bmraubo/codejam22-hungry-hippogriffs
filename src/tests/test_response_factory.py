@@ -17,7 +17,6 @@ def test_sign_up_response():
         "status": True,
         "user": {
             "id": 1,
-            "chat_room_id": "a-chatroom-id",
             "name": "funky_goblin",
             "user_id": "a-user-id",
             "created_at": None,

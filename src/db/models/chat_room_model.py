@@ -1,6 +1,8 @@
-from sqlalchemy import Column, DateTime, ForeignKeyConstraint, Integer, String, func
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, func
+from sqlalchemy.orm import relationship
 
 from ..session import Base
+from .messages_model import Message
 
 
 class ChatRoom(Base):
@@ -9,16 +11,13 @@ class ChatRoom(Base):
     __tablename__ = "chatrooms"
     id = Column(Integer, primary_key=True)
     chat_room_id = Column(String, unique=True)
-    user_one = Column(Integer)
-    user_two = Column(Integer)
+    user_one = Column(String, ForeignKey("users.user_id"))
+    user_two = Column(String, ForeignKey("users.user_id"))
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), server_onupdate=func.now())
-    __table_args__ = (
-        ForeignKeyConstraint([user_one, user_two], ["users.user_id", "users.user_id"]),
-        {},
-    )
+    message_relation_ship = relationship(Message)
 
     def __repr__(self):
-        return "<ChatRoom(chat_room_id='{}', message='{}')>".format(
-            self.chat_room_id, self.message
+        return "<ChatRoom(chat_room_id='{}', user_one='{}')>".format(
+            self.chat_room_id, self.user_one
         )
