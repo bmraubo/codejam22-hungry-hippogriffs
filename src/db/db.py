@@ -14,7 +14,7 @@ class DatabaseService:
         """Saves user object to database"""
         user_db_model = User(
             name=user_obj.name,
-            chat_room_id=user_obj.chatroom_id,
+            chat_room_id=user_obj.chat_room_id,
             user_id=user_obj.user_id,
         )
         Session.add(user_db_model)
@@ -27,10 +27,10 @@ class DatabaseService:
         :param name:
         :return:
         """
-        user_db_obj = Session.query(User).filter_by(user_id=id).first()
+        user_db_obj = Session.query(User).filter_by(user_id=user_id).first()
         return create_and_get_user(
             user_id=user_db_obj.user_id,
-            chatroom_id=user_db_obj.chat_room_id,
+            chat_room_id=user_db_obj.chat_room_id,
             username=user_db_obj.name,
         )
 
@@ -42,10 +42,9 @@ class DatabaseService:
         :param message_obj:
         :return:
         """
-        user_item = Session.query(User).filter_by(user_id=message_obj.user_id).first()
         message_obj = Message(
-            chat_room_id=chatroom_obj.chatroom_id,
-            user_id=user_item.id,
+            chat_room_id=chatroom_obj.chat_room_id,
+            user_id=message_obj.user_id,
             body=message_obj.body,
         )
         Session.add(message_obj)
@@ -57,7 +56,7 @@ class DatabaseService:
         """
             Fetch all messages in a chat room
 
-        :param chatroom_id:
+        :param chat_room_id:
         :param page:
         :param size:
         :return:
@@ -66,7 +65,7 @@ class DatabaseService:
         offset = page * size
         chatroom_obj.messages = (
             Session.query(Message)
-            .filter_by(chat_room_id=chatroom_obj.chatroom_id)
+            .filter_by(chat_room_id=chatroom_obj.chat_room_id)
             .order_by(Message.created_at.desc())
             .limit(size)
             .offset(offset)

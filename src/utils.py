@@ -28,10 +28,10 @@ class RandomIdGenerator:
         return f"{secrets.choice(self._adjectives)}-{secrets.choice(self._nouns)}-{secrets.choice(self._nouns)}"
 
 
-def create_and_get_user(user_id: str, chatroom_id: str, username: str) -> UserModel:
+def create_and_get_user(user_id: str, chat_room_id: str, username: str) -> UserModel:
     """Creates User object from returns it"""
     try:
-        user = UserModel(user_id=user_id, chatroom_id=chatroom_id, name=username)
+        user = UserModel(user_id=user_id, chat_room_id=chat_room_id, name=username)
     except ValidationError as e:
         # todo: we can parse(e.json()) and return readable exception to the user
         print(e.json())
@@ -51,10 +51,12 @@ def create_and_get_message(message_id: int, body: str) -> MessageModel:
         return message
 
 
-def create_and_get_chatroom(user_id: str, chatroom_id: str) -> ChatRoomModel:
+def create_and_get_chatroom(user_id: str, chat_room_id: str) -> ChatRoomModel:
     """Creates Chatroom object and returns it"""
     try:
-        chatroom = ChatRoomModel(user_id=user_id, chatroom_id=chatroom_id, messages=[])
+        chatroom = ChatRoomModel(
+            user_id=user_id, chat_room_id=chat_room_id, messages=[]
+        )
     except ValidationError as e:
         print(e.json())
     else:
